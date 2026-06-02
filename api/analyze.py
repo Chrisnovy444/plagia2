@@ -391,14 +391,16 @@ async def run_analysis(text: str) -> dict:
 
         # Word-level Jaccard
         word_sim = minhash_similarity(text, source_text)
-        # N-gram similarity
-        ngram_sim = ngram_similarity(text, source_text, 3)
+        # N-gram similarity (2-gram + 3-gram)
+        ngram2_sim = ngram_similarity(text, source_text, 2)
+        ngram3_sim = ngram_similarity(text, source_text, 3)
+        ngram_sim = max(ngram2_sim, ngram3_sim)
         # Try HuggingFace semantic similarity
         semantic_sim = await semantic_similarity_hf(text[:500], source_text[:500])
 
-        combined = max(word_sim, ngram_sim * 1.2, semantic_sim * 0.85)
+        combined = max(word_sim, ngram_sim * 1.5, semantic_sim * 0.85)
 
-        if combined > 0.12:
+        if combined > 0.08:
             match_type = "exact_copy" if word_sim > 0.6 else "paraphrase" if semantic_sim > 0.5 else "similar"
             matches.append({
                 "source": source["source"],
