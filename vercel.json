@@ -23,7 +23,7 @@
     { "src": "/(.*)", "dest": "/$1" }
   ],
   "env": {
-    "HF_TOKEN": "@hf-token",
-    "GROQ_API_KEY": "@groq-api-key"
+    "HF_TOKEN": "",
+    "GROQ_API_KEY": ""
   }
 }
